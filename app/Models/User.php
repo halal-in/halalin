@@ -10,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Laravel\Fortify\TwoFactorAuthenticatable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property int $id
@@ -24,7 +25,17 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  */
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable([
+    'role_id',
+    'name',
+    'email',
+    'password',
+    'phone_number',
+    'is_verified',
+    'age',
+    'location',
+    'is_blocked'
+])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -42,6 +53,40 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
+            'is_verified' => 'boolean',
+            'is_blocked' => 'boolean',
         ];
+    }
+
+    public function role() {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
+    public function userPhotos() {
+        return $this->hasMany(UserPhoto::class, 'user_id');
+    }
+
+    public function guardians() {
+        return $this->hasOne(Guardian::class, 'user_id');
+    }
+
+    public function reportsSent(): HasMany
+    {
+        return $this->hasMany(UserReport::class, 'reporter_id');
+    }
+
+    public function reportsReceived(): HasMany
+    {
+        return $this->hasMany(UserReport::class, 'reported_id');
+    }
+
+    public function interestSender()
+    {
+        return $this->hasMany(Interest::class, 'sender_id');
+    }
+
+    public function interestReceiver()
+    {
+        return $this->hasMany(Interest::class, 'receiver_id');
     }
 }
