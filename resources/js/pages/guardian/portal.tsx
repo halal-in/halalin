@@ -8,7 +8,6 @@ import { PortalHeader } from '@/components/guardian/portal-header';
 import { WardSessionSelector } from '@/components/guardian/ward-session-selector';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { GuardianLayout } from '@/layouts/guardian/guardian-layout';
 import type { GuardianInterestItem } from '@/types/guardian';
 
 interface GuardianPortalProps {
@@ -23,7 +22,7 @@ export default function GuardianPortal({ interests }: GuardianPortalProps) {
         interests.find((item) => item.id === selectedId) ?? interests[0] ?? null;
 
     return (
-        <GuardianLayout>
+        <>
             <Head title="Portal Wali • Pengawasan" />
 
             <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 p-4 md:p-6">
@@ -86,6 +85,6 @@ export default function GuardianPortal({ interests }: GuardianPortalProps) {
                     </>
                 )}
             </div>
-        </GuardianLayout>
+        </>
     );
 }
