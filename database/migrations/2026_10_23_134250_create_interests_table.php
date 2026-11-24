@@ -16,6 +16,11 @@ return new class extends Migration
             $table->foreignId('sender_id')->constrained('users');
             $table->foreignId('receiver_id')->constrained('users');
             $table->enum('status', ['JEDA', 'LANJUT', 'BERHENTI']);
+            $table->timestamp('sender_approved_at')->nullable();
+            $table->timestamp('receiver_approved_at')->nullable();
+            $table->timestamp('sender_guardian_approved_at')->nullable();
+            $table->timestamp('receiver_guardian_approved_at')->nullable();
+            $table->text('end_reason')->default("");
             $table->timestamps();
         });
     }
